@@ -11,31 +11,27 @@ app.use(express.json());
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
-app.use('/api/users', userRoutes);
 
-// Test route
-app.get('/', (req, res) => res.send('API Running'));
+// MongoDB connection with async/await
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB Connected');
 
-// 🔹 Safe route logger
-if (app._router) {
-  app._router.stack.forEach(r => {
-    if (r.route && r.route.path) {
-      console.log(`Route: ${r.route.path}`);
-    } else if (r.name === 'router') {
-      r.handle.stack.forEach(handler => {
-        if (handler.route) {
-          console.log(`Route: /api/users${handler.route.path}`);
-        }
-      });
-    }
-  });
-}
+    // Mount routes AFTER DB connection
+    app.use('/api/users', userRoutes);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+    // Test route
+    app.get('/', (req, res) => res.send('API Running'));
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+    // Start server
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit process if DB fails to connect
+  }
+};
+
+// Start everything
+startServer();
