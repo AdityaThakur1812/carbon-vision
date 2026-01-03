@@ -1,36 +1,63 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../css/Navbar.css";
 
-const Navbar = ({ user, setUser }) => {
+export default function Navbar({ user, setUser }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  const logout = () => {
+    localStorage.removeItem("token");
     setUser(null);
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
-    <nav className="bg-gray-800 text-white px-4 py-3 flex justify-between items-center">
-      <div className="font-bold text-lg">
-        <Link to="/">Carbon Vision</Link>
-      </div>
-      <div className="space-x-4">
-        {user ? (
+    <nav className="navbar">
+      <div className="logo">Carbon Vision 🌿</div>
+
+      <ul className="nav-links">
+        {!user && (
           <>
-            <span>Welcome, {user.name}</span>
-            <Link to="/dashboard" className="hover:underline">Dashboard</Link>
-            <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="hover:underline">Login</Link>
-            <Link to="/register" className="hover:underline">Register</Link>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/register">Register</Link>
+            </li>
           </>
         )}
-      </div>
+
+        {user && (
+          <>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+
+            <li>
+              <Link to="/activity">Daily Activity</Link>
+            </li>
+
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+
+            <li>
+              <Link to="/recommendations">AI Tips</Link>
+            </li>
+
+            {/* ✅ ADD THIS */}
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+
+            <li>
+              <button className="logout-btn" onClick={logout}>
+                Logout
+              </button>
+            </li>
+          </>
+        )}
+      </ul>
     </nav>
   );
-};
-
-export default Navbar;
+}

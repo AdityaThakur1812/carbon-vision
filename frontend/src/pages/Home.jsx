@@ -1,46 +1,71 @@
-import React, { useState } from 'react';
-import api from '../services/api';
+import React, { useEffect, useState } from "react";
+import { getTodayActivity } from "../services/activityService";
+import { getRecommendations } from "../services/aiService";
+import { Link } from "react-router-dom";
+import "../css/Home.css";
 
-const Home = () => {
-  const [data, setData] = useState({ transport: 0, energy: 0, food: 0, waste: 0 });
+export default function Home() {
+  const [today, setToday] = useState(null);
+  const [tips, setTips] = useState([]);
 
-  const handleChange = e => {
-    setData({ ...data, [e.target.name]: Number(e.target.value) });
-  };
+  useEffect(() => {
+    getTodayActivity()
+      .then((res) => setToday(res.data))
+      .catch(() => setToday(null));
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const userId = 'USER_ID_HERE'; // Replace with actual logged-in user id
-      const res = await api.post('/activities', { ...data, userId });
-      console.log(res.data);
-      alert('Activity saved!');
-    } catch (err) {
-      console.error(err);
-      alert('Error saving activity');
-    }
-  };
+    getRecommendations(false)
+      .then((res) => setTips(res.data.suggestions?.slice(0, 2) || []))
+      .catch(() => setTips([]));
+  }, []);
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Daily Carbon Footprint</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {['transport', 'energy', 'food', 'waste'].map(field => (
-          <div key={field}>
-            <label className="block mb-1">{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-            <input
-              type="number"
-              name={field}
-              value={data[field]}
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-            />
+    <div className="home-page">
+      {/* HERO */}
+      <div className="home-hero">
+        <h1>🌱 Carbon Vision</h1>
+        <p>Track today. Improve tomorrow. Save the planet.</p>
+      </div>
+
+      {/* TODAY SUMMARY */}
+      <div className="home-card">
+        <h3>Today’s Carbon Footprint</h3>
+        {today ? (
+          <h2>{today.carbonPoints?.toFixed(2)} kg CO₂</h2>
+        ) : (
+          <p>No activity logged today.</p>
+        )}
+      </div>
+
+      {/* QUICK ACTIONS */}
+      <div className="quick-actions">
+        <Link to="/activity" className="action-btn">
+          ➕ Log Today’s Activity
+        </Link>
+
+        <Link to="/dashboard" className="action-btn secondary">
+          📊 Dashboard
+        </Link>
+
+        <Link to="/recommendations" className="action-btn outline">
+          🤖 AI Tips
+        </Link>
+      </div>
+
+      {/* AI PREVIEW */}
+      <div className="ai-preview">
+        <h3>AI Suggestions</h3>
+
+        {tips.length === 0 && (
+          <p className="muted">Log activity to get AI recommendations.</p>
+        )}
+
+        {tips.map((t, i) => (
+          <div key={i} className="ai-tip">
+            <strong>{t.title}</strong>
+            <p>{t.detail}</p>
           </div>
         ))}
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Submit</button>
-      </form>
+      </div>
     </div>
   );
-};
-
-export default Home;
+}

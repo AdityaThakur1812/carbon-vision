@@ -1,37 +1,23 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Import routes
-const userRoutes = require('./routes/userRoutes');
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ DB Error:", err));
 
-// MongoDB connection with async/await
-const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB Connected');
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/activity", require("./routes/activityRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
+app.use("/api/ai", require("./routes/aiRoutes"));
 
-    // Mount routes AFTER DB connection
-    app.use('/api/users', userRoutes);
+app.get("/", (req, res) => res.send("API Running"));
 
-    // Test route
-    app.get('/', (req, res) => res.send('API Running'));
-
-    // Start server
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    process.exit(1); // Exit process if DB fails to connect
-  }
-};
-
-// Start everything
-startServer();
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server started on port ${PORT}`));

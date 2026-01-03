@@ -1,10 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser, getMe } = require('../controllers/userController');
-const auth = require('../middleware/auth');
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.get('/me', auth, getMe);
+const authController = require("../controllers/authController");
+const userController = require("../controllers/userController");
+const userAuth = require("../middleware/userAuth");
+
+// AUTH
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+
+// USER
+router.get("/me", userAuth, userController.getMe);
+router.get("/profile", userAuth, userController.getProfile);
+
+// ✅ FIX: correctly reference controller function
+router.put("/profile", userAuth, userController.updateProfile);
 
 module.exports = router;

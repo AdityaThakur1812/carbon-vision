@@ -1,0 +1,128 @@
+/* General Container */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .register-container {
+    flex-direction: row;
+  }
+}
+
+/* Left Section */
+.register-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 2.5rem;
+  background: linear-gradient(to bottom right, #00b37e, #007c91);
+  text-align: center;
+}
+
+.register-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.register-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.register-image {
+  width: 20rem;
+  opacity: 0.9;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .register-image {
+    display: block;
+  }
+}
+
+/* Right Section */
+.register-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+/* Register Box */
+.register-box {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.register-heading {
+  font-size: 1.8rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Form */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group label {
+  color: #1e293b;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #00b37e;
+  box-shadow: 0 0 0 3px rgba(0, 179, 126, 0.2);
+}
+
+/* Button */
+.register-btn {
+  width: 100%;
+  padding: 0.8rem;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: linear-gradient(to right, #00b37e, #007c91);
+  transition: 0.3s;
+}
+
+.register-btn:hover {
+  background: linear-gradient(to right, #007c91, #00b37e);
+}
+
+/* Message */
+.register-message {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #007c91;
+}

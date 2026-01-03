@@ -1,0 +1,77 @@
+.daily-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #064e3b, #022c22);
+  padding: 40px 14px;
+}
+
+.daily-glass {
+  max-width: 950px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+}
+
+.daily-title {
+  color: #ecfdf5;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.daily-subtitle {
+  color: #a7f3d0;
+  margin-bottom: 30px;
+}
+
+.daily-section {
+  margin-bottom: 28px;
+}
+
+.daily-section h3 {
+  color: #ecfdf5;
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+input, select {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.95);
+}
+
+.checkbox-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.checkbox-row label {
+  color: #d1fae5;
+  font-size: 0.9rem;
+}
+
+.save-btn {
+  margin-top: 30px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #10b981, #22c55e);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(16,185,129,0.4);
+}
